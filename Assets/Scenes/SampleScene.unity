@@ -770,7 +770,7 @@ GameObject:
   - component: {fileID: 1564475783}
   - component: {fileID: 1564475788}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -790,7 +790,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotAngleSpeed: 1
   playerSpeed: 2
-  speedBoost: 1.5
+  speedBoost: 3
+  bullet: {fileID: 3019626679442886095, guid: 2b42aeb3a49778c46869c08ce7489c01, type: 3}
 --- !u!136 &1564475784
 CapsuleCollider:
   m_ObjectHideFlags: 0

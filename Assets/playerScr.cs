@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class playerScr : MonoBehaviour
 {
-    [SerializeField] float rotAngleSpeed=1f;
+    [Header("Speed stats")]
+    [SerializeField] float rotAngleSpeed=1.3f;
     public float playerSpeed=3f;
-    public float speedBoost=1.5f;
+    public float speedBoost=2f;
+    public int activeBoost=0;
+    [Header("Bullet stuff")]
+    [SerializeField]GameObject bullet;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,15 +30,25 @@ public class playerScr : MonoBehaviour
         }
         if(Input.GetKey(KeyCode.W))
         {
-            transform.Translate(Vector3.forward*playerSpeed*Time.deltaTime);
+            transform.Translate(Vector3.forward*playerSpeed*Time.deltaTime*Mathf.Pow(speedBoost,activeBoost));
         }
         else if(Input.GetKey(KeyCode.S))
         {
             transform.Translate(-Vector3.forward*playerSpeed*Time.deltaTime);
         }
-        if(Input.GetKey(KeyCode.LeftShift))
-        {
 
+        if(Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            activeBoost=0;
+        }
+        else if(Input.GetKey(KeyCode.LeftShift))
+        {
+            activeBoost=1;
+        }
+
+        if(Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            Instantiate(bullet,transform.position+transform.forward,transform.rotation);
         }
     }
 }
