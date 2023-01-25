@@ -9,12 +9,15 @@ public class playerScr : MonoBehaviour
     public float playerSpeed=3f;
     public float speedBoost=2f;
     public int activeBoost=0;
-    [Header("Bullet stuff")]
-    [SerializeField]GameObject bullet;
+    [Header("Weapon stuff")]
+    int selectedWeapon=0;
+    int selectedWeaponDamage = 1;
+    [SerializeField]GameObject currentMuzzle;
+    [SerializeField]int health = 5;
     // Start is called before the first frame update
     void Start()
     {
-        
+        currentMuzzle.SetActive(false);
     }
 
     // Update is called once per frame
@@ -45,10 +48,46 @@ public class playerScr : MonoBehaviour
         {
             activeBoost=1;
         }
+    }
 
-        if(Input.GetKeyDown(KeyCode.UpArrow))
+    void Update()
+    {
+        if(selectedWeapon==0 && Input.GetKeyDown(KeyCode.Space))
         {
-            Instantiate(bullet,transform.position+transform.forward,transform.rotation);
+            //Instantiate(bullet,transform.position+transform.forward,transform.rotation);
+            RaycastHit hit;
+            Physics.Raycast(transform.position,transform.forward,out hit, 10f);
+            StartCoroutine(pistolShot());
+            if(hit.collider!=null)
+            {
+                Debug.Log(hit.collider.name);
+                if(hit.collider.GetComponent<EnemyAbs>())
+                {
+                    hit.collider.GetComponent<EnemyAbs>().enemyHit(selectedWeaponDamage);
+                }
+                else if(hit.collider.tag=="Wall") 
+                {
+                    GameObject hole = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    hole.GetComponent<MeshRenderer>().material.color = Color.black;
+                    hole.transform.localScale = new Vector3(0.05f,0.05f,0.05f);
+                    hole.GetComponent<Collider>().enabled=false;
+                    hole.transform.position = hit.point;
+                    Destroy(hole,5);
+                }
+            }
         }
+    }
+
+    IEnumerator pistolShot()
+    {
+        currentMuzzle.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        currentMuzzle.SetActive(false);
+    }
+
+    public void hit(int damage)
+    {
+        health-=damage;
+        Debug.Log(health);
     }
 }
