@@ -30,6 +30,7 @@ public abstract class EnemyAbs : MonoBehaviour
         GetComponent<Animator>().SetBool("dead",true);
         speed=0;
         damage=0;
+        attackDistance=0;
         this.GetComponent<Collider>().enabled = false;
         this.GetComponent<Rigidbody>().isKinematic = true;
         Destroy(this.gameObject,10);
